@@ -1,13 +1,16 @@
 using System;
+using System.Collections.Generic;
 using System.Text.RegularExpressions;
+using Flunt.Notifications;
 using Flunt.Validations;
 using TouhouArticleMaker.Shared;
 
 namespace TouhouArticleMaker.Domain
 {
-    public abstract class User : Contract<Entity> 
+    public abstract class User : Entity
     {
-        protected User(Name name, Title userName, string password, Email email)
+        protected User(Name name, Title userName, string password, Email email, EntityValidation validation) 
+                : base(validation)
         {
             Name = name;
             UserName = userName;
@@ -15,6 +18,16 @@ namespace TouhouArticleMaker.Domain
             Email = email;
             CreateDate = DateTime.Now;
             Active = true;
+            _validation = validation;
+
+            if(!name.IsValid)
+                _validation.AddNotifications(name.Notifications);
+
+            if(!userName.IsValid)
+                _validation.AddNotifications(userName.Notifications);
+
+            if(!email.IsValid)
+                _validation.AddNotifications(email.Notifications);
 
             if(IsPasswordValid(password)){
 
@@ -24,9 +37,9 @@ namespace TouhouArticleMaker.Domain
 
         private bool IsPasswordValid(string password)
         {
-            AddNotifications(this.Requires()
-                .IsLowerThan(password, 8, "User.Password", "Password length is lower than 8.")
-                .IsGreaterThan(password, 25, "User.Password", "Password length is greater than 25.")
+            _validation.AddNotifications(new Contract<EntityValidation>().Requires()
+                .IsGreaterThan(password, 7, "Title.Text", "Password length should be greater or equals than 7.")
+                .IsLowerThan(password, 25, "User.Password", "Password length is greater than 25.")
             );
 
             if(!IsPasswordHasANumber(password))
@@ -45,7 +58,7 @@ namespace TouhouArticleMaker.Domain
             if(hasNumber.IsMatch(password))
                 return true;                
 
-            AddNotification("User.Password", "Password should have at least one number.");
+            _validation.AddNotification("User.Password", "Password should have at least one number.");
             return false;
         }
 
@@ -56,7 +69,7 @@ namespace TouhouArticleMaker.Domain
             if(hasUpperChar.IsMatch(password))
                 return true;                
 
-            AddNotification("User.Password", "Password should have at least one upper case char.");
+            _validation.AddNotification("User.Password", "Password should have at least one upper case char.");
             return false;
         }
 
@@ -66,5 +79,7 @@ namespace TouhouArticleMaker.Domain
         public Email Email { get; private set; }
         public DateTime CreateDate { get; private set; }
         public bool Active { get; private set; }
+
+        private EntityValidation _validation;
     }
 }

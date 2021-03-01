@@ -4,17 +4,16 @@ using Flunt.Notifications;
 
 namespace TouhouArticleMaker.Shared
 {
-    public abstract class Entity //: INotifiable
+    public abstract class Entity
     {        
-        public Guid Id { get; private set; }
-        public Entity()
+        private EntityValidation _validation;
+        public Entity(EntityValidation validation)
         {
-            Id = new Guid();
+            Id = Guid.NewGuid();
+            _validation = validation;
         }
-
-        // public void AddNotifications(IEnumerable<Notification> notifications)
-        // {
-        //     throw new NotImplementedException();
-        // }
+        public Guid Id { get; private set; }
+        public bool IsValid { get{ return _validation.IsValid;} }
+        public IReadOnlyCollection<Notification> Notifications { get{ return _validation.Notifications;} }
     }
 }

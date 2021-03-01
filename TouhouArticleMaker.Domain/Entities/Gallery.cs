@@ -6,12 +6,16 @@ using TouhouArticleMaker.Shared;
 
 namespace TouhouArticleMaker.Domain
 {
-    public class Gallery : Contract<Entity> 
+    public class Gallery : Entity
     {
         private IList<Photo> _photos;
-        public Gallery()
+        public Gallery(EntityValidation validation) : base(validation)
         {
             _photos = new List<Photo>();
+        }
+
+        public void AddPhoto(Photo photo){
+            _photos.Add(photo);
         }
         public IReadOnlyCollection<Photo> Photos { get {return _photos.ToArray();} }
     }

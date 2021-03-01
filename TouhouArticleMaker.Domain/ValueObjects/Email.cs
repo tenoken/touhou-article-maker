@@ -1,4 +1,3 @@
-using System;
 using Flunt.Validations;
 using TouhouArticleMaker.Shared;
 

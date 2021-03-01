@@ -11,10 +11,8 @@ namespace TouhouArticleMaker.Domain
             Text = text;
 
             AddNotifications(this.Requires()
-                .IsGreaterOrEqualsThan(text, 2, "Title.Text", "Firstname length should be greater or equals than 3.")
-                .IsGreaterOrEqualsThan(text, 2, "Title.Text", "LastName length should be greater or equals than 3.")
-                .IsLowerOrEqualsThan(text, 50, "Title.Text", "Firstname length should be lower or equals than 20.")
-                .IsLowerOrEqualsThan(text, 50, "Title.Text", "LastName length should be lower or equals than 20.")
+                .IsGreaterThan(text, 2, "Title.Text", "Title length should be greater or equals than 2.")
+                .IsLowerOrEqualsThan(text, 50, "Title.Text", "Title length should be lower or equals than 50.")
             );
         }
         public string Text { get; private set; }

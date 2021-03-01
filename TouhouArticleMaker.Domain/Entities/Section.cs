@@ -4,20 +4,24 @@ using TouhouArticleMaker.Shared;
 
 namespace TouhouArticleMaker.Domain
 {
-    public class Section : Contract<Entity> 
+    public class Section : Entity
     {
-        public Section(Title title, string text)
+        public Section(Title title, Text text, EntityValidation validation) 
+                : base(validation)
         {
+            //ArticleId = article.Id;
             Title = title;
             Text = text;
 
-            AddNotifications(this.Requires()
-                .IsNotNullOrEmpty(text, "Article.Text", "Text should be not null or empty.")
-            );
+            if(!title.IsValid)
+                validation.AddNotifications(title.Notifications);
+
+            if(!text.IsValid)
+                validation.AddNotifications(text.Notifications);
         }
 
         public Guid ArticleId { get; private set; }
         public Title Title { get; private set; }
-        public string Text { get; private set; }
+        public Text Text { get; private set; }
     }
 }

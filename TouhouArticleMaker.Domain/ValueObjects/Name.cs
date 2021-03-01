@@ -1,6 +1,4 @@
-using System;
 using System.Linq;
-using Flunt.Notifications;
 using Flunt.Validations;
 using TouhouArticleMaker.Shared;
 
@@ -19,8 +17,6 @@ namespace TouhouArticleMaker.Domain
                 .IsLowerOrEqualsThan(firstname, 40, "Name.FirstName", "Firstname length should be lower or equals than 40.")
                 .IsLowerOrEqualsThan(lastname, 40, "Name.LastName", "LastName length should be lower or equals than 40.")
             );
-
-            Notifications.ToList().Distinct();
         }
 
         public string FirstName { get; private set; }
