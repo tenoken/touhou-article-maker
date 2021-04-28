@@ -19,11 +19,11 @@ namespace TouhouArticleMaker.Tests
             var released = DateTime.Now;
             var genre = new Title("Vertical Danmaku Shooting Game");
             var validation = new EntityValidation();
-            var platforms = new List<Title>();
-            var requirements = new List<Title>();
+            var platforms = new Title("Windows XP");
+            var requirements = new Title("Pentium 500MHz");
 
-            platforms.Add(new Title("Windows XP"));
-            requirements.Add(new Title("Pentium 500MHz"));
+            //platforms.Add(new Title("Windows XP"));
+            //requirements.Add(new Title("Pentium 500MHz"));
             
             //Act
             var sut = new Card( 
@@ -49,11 +49,11 @@ namespace TouhouArticleMaker.Tests
             var released = DateTime.MaxValue;
             var genre = new Title("Vertical Danmaku Shooting Game");
             var validation = new EntityValidation();
-            var platforms = new List<Title>();
-            var requirements = new List<Title>();
+            var platforms = new Title("Windows XP");
+            var requirements = new Title("Pentium 500MHz");
 
-            platforms.Add(new Title("Windows XP"));
-            requirements.Add(new Title("Pentium 500MHz"));
+            //platforms.Add(new Title("Windows XP"));
+            //requirements.Add(new Title("Pentium 500MHz"));
             
             //Act
             var sut = new Card( 

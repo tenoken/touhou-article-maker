@@ -8,13 +8,18 @@ namespace TouhouArticleMaker.Domain
 {
     public class Card : Entity
     {
+        protected Card()
+        {
+
+        }
+
         public Card(Title title, 
                     Title developer, 
                     Title publisher, 
                     DateTime released, 
                     Title genre, 
-                    IList<Title> platforms, 
-                    IList<Title> requirements, 
+                    Title platforms, 
+                    Title requirements, 
                     EntityValidation validation) 
                 : base(validation)
         {
@@ -38,17 +43,23 @@ namespace TouhouArticleMaker.Domain
             if(!genre.IsValid)
                 validation.AddNotifications(genre.Notifications);
 
-            foreach (var requirement in requirements)
-            {
-                if(!requirement.IsValid)
-                    validation.AddNotifications(requirement.Notifications);
-            }
+            if (!requirements.IsValid)
+                validation.AddNotifications(publisher.Notifications);
 
-            foreach (var platform in platforms)
-            {
-                if(!platform.IsValid)
-                    validation.AddNotifications(platform.Notifications);
-            }
+            if (!platforms.IsValid)
+                validation.AddNotifications(genre.Notifications);
+
+            //foreach (var requirement in requirements)
+            //{
+            //    if(!requirement.IsValid)
+            //        validation.AddNotifications(requirement.Notifications);
+            //}
+
+            //foreach (var platform in platforms)
+            //{
+            //    if(!platform.IsValid)
+            //        validation.AddNotifications(platform.Notifications);
+            //}
 
             validation.AddNotifications(new Contract<EntityValidation>().Requires()
                 .IsNotMinValue(released, "Card.Released", "Released should be valid date, not a minvalue.")
@@ -60,13 +71,16 @@ namespace TouhouArticleMaker.Domain
             PhotoId = photo.Id;
         }
 
-        public Guid PhotoId { get; private set; }
+        public string PhotoId { get; private set; }
         public Title Title { get; private set; }
         public Title Developer { get; private set; }
         public Title Publisher { get; private set; }
         public DateTime Released { get; private set; }
         public Title Genre { get; private set; }
-        public IList<Title> Platforms { get; private set; }
-        public IList<Title> Requirements { get; private set; }
+        //TODO: create a requirements and platforms class
+        //public IList<Title> Platforms { get; private set; }
+        //public IList<Title> Requirements { get; private set; }
+        public Title Platforms { get; private set; }
+        public Title Requirements { get; private set; }
     }
 }

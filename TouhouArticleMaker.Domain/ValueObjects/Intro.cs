@@ -6,6 +6,11 @@ namespace  TouhouArticleMaker.Domain
 {
     public class Intro : Contract<ValueObject>
     {
+        protected Intro()
+        {
+
+        }
+
         public Intro(string text)
         {
             Text = text;

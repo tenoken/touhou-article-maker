@@ -5,6 +5,11 @@ namespace TouhouArticleMaker.Domain
 {
     public class Email : Contract<ValueObject>
     {
+        protected Email()
+        {
+
+        }
+
         public Email(string address)
         {
             Address = address;

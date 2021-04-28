@@ -7,9 +7,14 @@ using TouhouArticleMaker.Shared;
 
 namespace TouhouArticleMaker.Domain
 {
-    public abstract class User : Entity
+    public class User : Entity
     {
-        protected User(Name name, Title userName, string password, Email email, EntityValidation validation) 
+        protected User()
+        {
+
+        }
+
+        public User(Name name, Title userName, string password, Email email, EntityValidation validation) 
                 : base(validation)
         {
             Name = name;

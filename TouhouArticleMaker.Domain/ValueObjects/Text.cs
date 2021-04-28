@@ -5,16 +5,21 @@ namespace  TouhouArticleMaker.Domain
 {
     public class Text : Contract<ValueObject>
     {
-        public Text(string text)
+        protected Text()
         {
-            TextCotnent = text;
+
+        }
+
+        public Text(string textContent)
+        {
+            TextContent = textContent;
 
             AddNotifications(this.Requires()
-                .IsLowerOrEqualsThan(text, 1000000, "Text.TextCotnent", "Text length should be lower or equals than 1.000.000.")
-                .IsGreaterThan(text, 0, "Text.TextCotnent", "Text length should be greater than 0.")
+                .IsLowerOrEqualsThan(textContent, 1000000, "Text.TextCotnent", "Text length should be lower or equals than 1.000.000.")
+                .IsGreaterThan(textContent, 0, "Text.TextCotnent", "Text length should be greater than 0.")
             );
         }
 
-        public string TextCotnent { get; private set; }
+        public string TextContent { get; private set; }
     }
 }

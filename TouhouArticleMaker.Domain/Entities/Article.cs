@@ -4,6 +4,8 @@ using System.Linq;
 using Flunt.Notifications;
 using Flunt.Validations;
 using TouhouArticleMaker.Shared;
+using Newtonsoft.Json.Converters;
+using Newtonsoft.Json;
 
 namespace TouhouArticleMaker.Domain
 {
@@ -12,10 +14,17 @@ namespace TouhouArticleMaker.Domain
         private IList<Section> _sections;
         private EntityValidation _validation;
 
-        public Article(Title title, Intro intro, ECategory category, EntityValidation validation) 
+        protected Article() : base()
+        {
+
+        }
+
+        public Article(Title title, Intro intro, ECategory category, EntityValidation validation, string id = null)
                 : base(validation)
         {
-            //AuthorId = author.Id;
+            if (!string.IsNullOrEmpty(id))
+                Id = id;
+
             Title = title;
             Intro = intro;
             Category = category;
@@ -23,33 +32,31 @@ namespace TouhouArticleMaker.Domain
             CreateDate = DateTime.Now;
             _validation = validation;
 
-            // if(!author.IsValid)
-            //     _validation.AddNotifications(author.Notifications);
-
-            if(!title.IsValid)
+            if (!title.IsValid)
                 _validation.AddNotifications(title.Notifications);
 
-            if(!intro.IsValid)
-                _validation.AddNotifications(intro.Notifications); 
+            if (!intro.IsValid)
+                _validation.AddNotifications(intro.Notifications);
         }
 
-        public void AddCard(Card card){
+        public void AddCard(Card card) {
             CardId = card.Id;
         }
 
-        public void AddGallery(Gallery gallery){
+        public void AddGallery(Gallery gallery) {
             GalleryId = gallery.Id;
         }
 
-        public void AddSection(Section section){
+        public void AddSection(Section section) {
             _sections.Add(section);
         }
 
-        public Guid AuthorId { get; private set; }
-        public Guid CardId { get; private set; }
-        public Guid GalleryId { get; private set; }
+        public string AuthorId { get; private set; }
+        public string CardId { get; private set; }
+        public string GalleryId { get; private set; }
         public Title Title { get; private set; }
         public Intro Intro { get; private set; }
+        [JsonConverter(typeof(StringEnumConverter))]
         public ECategory Category { get; private set; }
         public IReadOnlyCollection<Section> Sections { get{ return _sections.ToArray();} }
         public DateTime CreateDate { get; private set; }        

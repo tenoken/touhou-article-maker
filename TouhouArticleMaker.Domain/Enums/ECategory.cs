@@ -2,7 +2,7 @@ namespace TouhouArticleMaker.Domain{
 
     public enum ECategory{
         Games,
-        Muisic,
+        Music,
         PrintWorks,
         News
     }

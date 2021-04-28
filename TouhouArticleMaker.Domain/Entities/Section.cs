@@ -6,10 +6,18 @@ namespace TouhouArticleMaker.Domain
 {
     public class Section : Entity
     {
-        public Section(Title title, Text text, EntityValidation validation) 
+        protected Section()
+        {
+
+        }
+
+        public Section(Title title, Text text, EntityValidation validation, string id = null) 
                 : base(validation)
         {
             //ArticleId = article.Id;
+            if (!string.IsNullOrEmpty(id))
+                Id = id;
+
             Title = title;
             Text = text;
 
@@ -20,7 +28,7 @@ namespace TouhouArticleMaker.Domain
                 validation.AddNotifications(text.Notifications);
         }
 
-        public Guid ArticleId { get; private set; }
+        public string ArticleId { get; private set; }
         public Title Title { get; private set; }
         public Text Text { get; private set; }
     }

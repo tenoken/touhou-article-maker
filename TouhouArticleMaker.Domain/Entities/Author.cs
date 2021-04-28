@@ -9,6 +9,11 @@ namespace TouhouArticleMaker.Domain
     {
         private IList<Article> _articles;
 
+        protected Author()
+        {
+
+        }
+
         public Author(Name name, Title userName, string password, Email email, EntityValidation validation) 
                 : base(name, userName, password, email, validation)
         {

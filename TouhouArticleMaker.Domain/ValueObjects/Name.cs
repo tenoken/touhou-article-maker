@@ -6,6 +6,11 @@ namespace TouhouArticleMaker.Domain
 {
     public class Name : Contract<ValueObject>
     {
+        protected Name()
+        {
+
+        }
+
         public Name(string firstname, string lastname)
         {
             FirstName = firstname;

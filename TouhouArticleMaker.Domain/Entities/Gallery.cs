@@ -8,6 +8,11 @@ namespace TouhouArticleMaker.Domain
 {
     public class Gallery : Entity
     {
+        protected Gallery()
+        {
+
+        }
+
         private IList<Photo> _photos;
         public Gallery(EntityValidation validation) : base(validation)
         {
