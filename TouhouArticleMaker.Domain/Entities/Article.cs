@@ -6,6 +6,8 @@ using Flunt.Validations;
 using TouhouArticleMaker.Shared;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json;
+using System.ComponentModel.DataAnnotations.Schema;
+using TouhouArticleMaker.Domain.Entities.Interfaces;
 
 namespace TouhouArticleMaker.Domain
 {
@@ -18,37 +20,52 @@ namespace TouhouArticleMaker.Domain
         {
 
         }
-
-        public Article(Title title, Intro intro, ECategory category, EntityValidation validation, string id = null)
+        //TODO: implement dependency injection
+        public Article(Title title, Intro intro, ECategory category, EntityValidation validation, string id = null, List<Section> sections = null, string authorId = null)
                 : base(validation)
         {
             if (!string.IsNullOrEmpty(id))
                 Id = id;
 
+            if (!string.IsNullOrEmpty(authorId))
+                AuthorId = authorId;
+
             Title = title;
             Intro = intro;
             Category = category;
-            _sections = new List<Section>();
+            _sections = sections;
             CreateDate = DateTime.Now;
-            _validation = validation;
+            Validation = validation ?? new EntityValidation();
 
             if (!title.IsValid)
-                _validation.AddNotifications(title.Notifications);
+                Validation.AddNotifications(title.Notifications);
 
             if (!intro.IsValid)
-                _validation.AddNotifications(intro.Notifications);
+                Validation.AddNotifications(intro.Notifications);
+
+            if (_sections == null)
+                _sections = new List<Section>();
         }
 
-        public void AddCard(Card card) {
+        public void AddCard(Card card) 
+        {
             CardId = card.Id;
         }
 
-        public void AddGallery(Gallery gallery) {
+        public void AddGallery(Gallery gallery) 
+        {
             GalleryId = gallery.Id;
         }
 
-        public void AddSection(Section section) {
-            _sections.Add(section);
+        public void AddSection(ISection section) 
+        {
+            section.SetArticleId(this);
+            //_sections.Add(section);
+        }
+
+        public void SetAuthor(Author author)
+        {
+            AuthorId = author.Id;
         }
 
         public string AuthorId { get; private set; }
@@ -58,7 +75,9 @@ namespace TouhouArticleMaker.Domain
         public Intro Intro { get; private set; }
         [JsonConverter(typeof(StringEnumConverter))]
         public ECategory Category { get; private set; }
-        public IReadOnlyCollection<Section> Sections { get{ return _sections.ToArray();} }
-        public DateTime CreateDate { get; private set; }        
+        public IReadOnlyCollection<Section> Sections { get{ return _sections?.ToArray();} }
+        public DateTime CreateDate { get; private set; }
+        [NotMapped]
+        public EntityValidation Validation { get; private set; }
     }
 }

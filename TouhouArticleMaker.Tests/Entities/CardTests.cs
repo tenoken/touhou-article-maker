@@ -18,6 +18,7 @@ namespace TouhouArticleMaker.Tests
             var publisher = new Title("Team Shanghai Alice");
             var released = DateTime.Now;
             var genre = new Title("Vertical Danmaku Shooting Game");
+            var gameplay = new Title("Single-Player Story Mode");
             var validation = new EntityValidation();
             var platforms = new Title("Windows XP");
             var requirements = new Title("Pentium 500MHz");
@@ -31,7 +32,8 @@ namespace TouhouArticleMaker.Tests
                     developer, 
                     publisher, 
                     released, 
-                    genre, 
+                    genre,
+                    gameplay,
                     platforms, 
                     requirements, 
                     validation);
@@ -48,6 +50,7 @@ namespace TouhouArticleMaker.Tests
             var publisher = new Title("Team Shanghai Alice");
             var released = DateTime.MaxValue;
             var genre = new Title("Vertical Danmaku Shooting Game");
+            var gameplay = new Title("Single-Player Story Mode");
             var validation = new EntityValidation();
             var platforms = new Title("Windows XP");
             var requirements = new Title("Pentium 500MHz");
@@ -61,7 +64,8 @@ namespace TouhouArticleMaker.Tests
                     developer, 
                     publisher, 
                     released, 
-                    genre, 
+                    genre,
+                    gameplay,
                     platforms, 
                     requirements, 
                     validation);

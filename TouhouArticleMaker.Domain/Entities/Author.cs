@@ -14,8 +14,8 @@ namespace TouhouArticleMaker.Domain
 
         }
 
-        public Author(Name name, Title userName, string password, Email email, EntityValidation validation) 
-                : base(name, userName, password, email, validation)
+        public Author(Name name, Title userName, string password, Email email, EntityValidation validation, string id = null) 
+                : base(name, userName, password, email, validation, id)
         {
             _articles = new List<Article>();
         }
@@ -24,6 +24,6 @@ namespace TouhouArticleMaker.Domain
             _articles.Add(article);
         }
 
-        public IReadOnlyCollection<Article> Articles { get {return _articles.ToArray();} }
+        public IReadOnlyCollection<Article> Articles { get {return _articles?.ToArray();} }
     }
 }

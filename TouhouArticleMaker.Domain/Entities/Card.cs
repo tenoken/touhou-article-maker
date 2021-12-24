@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using Flunt.Notifications;
 using Flunt.Validations;
 using TouhouArticleMaker.Shared;
@@ -18,9 +19,11 @@ namespace TouhouArticleMaker.Domain
                     Title publisher, 
                     DateTime released, 
                     Title genre, 
+                    Title gameplay,
                     Title platforms, 
                     Title requirements, 
-                    EntityValidation validation) 
+                    EntityValidation validation,
+                    Photo photo = null) 
                 : base(validation)
         {
             Title = title;
@@ -28,26 +31,32 @@ namespace TouhouArticleMaker.Domain
             Publisher = publisher;
             Released = released;
             Genre = genre;
+            Gameplay = gameplay;
             Platforms = platforms;
             Requirements = requirements;
+            Validation = validation;
+            Photo = photo;
 
             if(!title.IsValid)
-                validation.AddNotifications(title.Notifications);
+                Validation.AddNotifications(title.Notifications);
 
             if(!developer.IsValid)
-                validation.AddNotifications(developer.Notifications);
+                Validation.AddNotifications(developer.Notifications);
 
             if(!publisher.IsValid)
-                validation.AddNotifications(publisher.Notifications);
+                Validation.AddNotifications(publisher.Notifications);
 
             if(!genre.IsValid)
-                validation.AddNotifications(genre.Notifications);
+                Validation.AddNotifications(genre.Notifications);
+
+            if (!gameplay.IsValid)
+                Validation.AddNotifications(genre.Notifications);
 
             if (!requirements.IsValid)
-                validation.AddNotifications(publisher.Notifications);
+                Validation.AddNotifications(publisher.Notifications);
 
             if (!platforms.IsValid)
-                validation.AddNotifications(genre.Notifications);
+                Validation.AddNotifications(genre.Notifications);
 
             //foreach (var requirement in requirements)
             //{
@@ -67,7 +76,7 @@ namespace TouhouArticleMaker.Domain
             );
         }
 
-        public void AddPhoto(Photo photo){
+        public void SetPhotoId(Photo photo){
             PhotoId = photo.Id;
         }
 
@@ -80,7 +89,12 @@ namespace TouhouArticleMaker.Domain
         //TODO: create a requirements and platforms class
         //public IList<Title> Platforms { get; private set; }
         //public IList<Title> Requirements { get; private set; }
+        public Title Gameplay { get; private set; }
         public Title Platforms { get; private set; }
         public Title Requirements { get; private set; }
+        [NotMapped]
+        public EntityValidation Validation { get; private set; }
+        [NotMapped]
+        public Photo Photo { get; private set; }
     }
 }

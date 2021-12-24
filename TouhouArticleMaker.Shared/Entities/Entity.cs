@@ -10,12 +10,12 @@ namespace TouhouArticleMaker.Shared
         private EntityValidation _validation;
         public Entity(EntityValidation validation = null)
         {
-            Id = Guid.NewGuid().ToString().Replace("-","");
+            Id = Guid.NewGuid().ToString();
             _validation = validation;
         }
         public string Id { get; protected set; }
-        public bool IsValid { get{ return _validation.IsValid;} }
+        public bool IsValid { get{ return _validation == null ? false : _validation.IsValid;} }
         [NotMapped]
-        public IReadOnlyCollection<Notification> Notifications { get{ return _validation.Notifications;} }
+        public IReadOnlyCollection<Notification> Notifications { get{ return _validation?.Notifications;} }
     }
 }

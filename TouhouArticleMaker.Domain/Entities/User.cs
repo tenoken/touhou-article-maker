@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.RegularExpressions;
 using Flunt.Notifications;
 using Flunt.Validations;
@@ -14,25 +15,28 @@ namespace TouhouArticleMaker.Domain
 
         }
 
-        public User(Name name, Title userName, string password, Email email, EntityValidation validation) 
+        public User(Name name, Title userName, string password, Email email, EntityValidation validation, string id = null) 
                 : base(validation)
         {
+            if (!string.IsNullOrEmpty(id))
+                Id = id;
+
             Name = name;
             UserName = userName;
             Password = password;
             Email = email;
             CreateDate = DateTime.Now;
             Active = true;
-            _validation = validation;
+            Validation = validation;
 
             if(!name.IsValid)
-                _validation.AddNotifications(name.Notifications);
+                Validation.AddNotifications(name.Notifications);
 
             if(!userName.IsValid)
-                _validation.AddNotifications(userName.Notifications);
+                Validation.AddNotifications(userName.Notifications);
 
             if(!email.IsValid)
-                _validation.AddNotifications(email.Notifications);
+                Validation.AddNotifications(email.Notifications);
 
             if(IsPasswordValid(password)){
 
@@ -42,10 +46,10 @@ namespace TouhouArticleMaker.Domain
 
         private bool IsPasswordValid(string password)
         {
-            _validation.AddNotifications(new Contract<EntityValidation>().Requires()
-                .IsGreaterThan(password, 7, "Title.Text", "Password length should be greater or equals than 7.")
-                .IsLowerThan(password, 25, "User.Password", "Password length is greater than 25.")
-            );
+            //_validation.AddNotifications(new Contract<EntityValidation>().Requires()
+            //    .IsGreaterThan(password, 7, "Title.Text", "Password length should be greater or equals than 7.")
+            //    .IsLowerThan(password, 25, "User.Password", "Password length is greater than 25.")
+            //);
 
             if(!IsPasswordHasANumber(password))
                  return false;
@@ -61,9 +65,9 @@ namespace TouhouArticleMaker.Domain
             var hasNumber = new Regex(@"[0-9]+");
 
             if(hasNumber.IsMatch(password))
-                return true;                
+                return true;
 
-            _validation.AddNotification("User.Password", "Password should have at least one number.");
+            Validation.AddNotification("User.Password", "Password should have at least one number.");
             return false;
         }
 
@@ -72,9 +76,9 @@ namespace TouhouArticleMaker.Domain
             var hasUpperChar = new Regex(@"[A-Z]+");
 
             if(hasUpperChar.IsMatch(password))
-                return true;                
+                return true;
 
-            _validation.AddNotification("User.Password", "Password should have at least one upper case char.");
+            Validation.AddNotification("User.Password", "Password should have at least one upper case char.");
             return false;
         }
 
@@ -85,6 +89,7 @@ namespace TouhouArticleMaker.Domain
         public DateTime CreateDate { get; private set; }
         public bool Active { get; private set; }
 
-        private EntityValidation _validation;
+        [NotMapped]
+        public EntityValidation Validation { get; private set; }
     }
 }
